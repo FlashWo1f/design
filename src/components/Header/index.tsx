@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Input, Divider } from 'antd';
-import './index.css'
+import './index.less'
 import { ShoppingCartOutlined } from '@ant-design/icons';
 const { Search } = Input;
 

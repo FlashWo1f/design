@@ -49,3 +49,61 @@ create-reate-app --template typescript design
 "extends": "./paths.json"
 
 ### 引入less
+
+1. yarn eject 暴露config和script
+2. yarn add less less-loader -D 安装less & less-loader到开发环境
+3. 修改webpack配置
+```js
+  const lessRegex = /\.less$/;  // 新增less配置
+  const lessModuleRegex = /\.module\.less$/; // 新增less配置
+  /* 下面是原有代码块 */
+  {
+    test: cssModuleRegex,
+    use: getStyleLoaders({
+      importLoaders: 1,
+      sourceMap: isEnvProduction && shouldUseSourceMap,
+      modules: true,
+      getLocalIdent: getCSSModuleLocalIdent,
+    }),
+  },
+  /* 上面是原有代码块 */
+  /* 下面是添加代码块 */
+  {
+    test: lessRegex,
+    exclude: lessModuleRegex,
+    use: getStyleLoaders({
+      importLoaders: 1,// 值是1
+      sourceMap: isEnvProduction && shouldUseSourceMap
+    },
+      "less-loader"
+    ),
+    sideEffects: true
+  },
+  {
+    test: lessModuleRegex,
+    use: getStyleLoaders({
+      importLoaders: 1,
+      sourceMap: isEnvProduction && shouldUseSourceMap,
+      modules: true, // 增加这个可以通过模块方式来访问less
+      getLocalIdent: getCSSModuleLocalIdent
+    },
+      "less-loader"
+    )
+  },
+  /* 上面是添加代码块 */
+  /* 下面是原有代码块 */
+  {
+    test: sassRegex,
+    exclude: sassModuleRegex,
+    use: getStyleLoaders(
+      {
+        importLoaders: 2,
+        sourceMap: isEnvProduction && shouldUseSourceMap,
+      },
+      'sass-loader'
+    ),
+    sideEffects: true,
+  },
+  /* 上面是原有代码块 */
+
+```
