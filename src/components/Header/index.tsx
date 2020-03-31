@@ -34,7 +34,7 @@ function Header() {
           购物车
         </div>
       </div>
-      <div className="loginOrReg">
+      <div className="loginOrReg link">
         <p onClick={handleClickLogin}>登录</p>  / <p onClick={handleClickReg}>注册</p>
       </div>
     </div>

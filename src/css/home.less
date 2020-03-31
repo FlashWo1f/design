@@ -1,0 +1,61 @@
+.home-wrap {
+
+  .home-main {
+    width: 1040px;
+    margin: 0 auto;
+    overflow: hidden;
+    zoom: 1;
+    .top-image {
+      width: 100%;
+      height: 98px;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .newBooksAndTags {
+      margin-top: 20px;
+      width: 100%;
+      display: flex;
+      .newBooks {
+        width: 740px;
+        display: flex;
+        flex-wrap: wrap;
+        padding-right: 40px;
+        box-sizing: border-box;
+        .card-container {
+          margin-right: 25px;
+          margin-bottom: 15px;
+        }
+        .card-container:nth-of-type(6) {
+          margin-right: 0;
+        }
+        .card-container:nth-of-type(11) {
+          margin-right: 0;
+        }
+      }
+      .asideTags {
+        margin-top: 50px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        .tagsTitle {
+          margin: 8px 0;
+        }
+        .ant-tag {
+          margin: 0 3px 5px 0;
+          cursor: pointer;
+        }
+      }
+    }
+    .infomation {
+      width: 700px;
+      border: solid 1px #ddd;
+      border-radius: 2px;
+      padding: 25px;
+      box-sizing: border-box;
+      margin-bottom: 4px;
+    }
+  }
+}
+
