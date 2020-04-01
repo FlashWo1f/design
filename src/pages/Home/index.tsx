@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createElement } from 'react';
 import Header from '../../components/Header/index';
-import { Card, Divider, Tag, Carousel } from 'antd'
+import { Card, Divider, Tag, Carousel, Comment, Tooltip, Avatar } from 'antd'
 import "../../css/home.less"
 import { NewBookSkeletons } from "../../skeletons"
-import { asideTags, homeInfo } from "../../mock/home"
+import { asideTags, homeInfo, rankList, comment } from "../../mock/home"
+import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
 const { Meta } = Card;
 
 function Home() {
 
+  const [likes, setLikes] = useState(0);
+  const [dislikes, setDislikes] = useState(0);
+  const [action, setAction] = useState<any>(null)
   const [loadingNewBooks, setLoadingNewBooks] = useState(true)
 
   // 第二参数为空数组, 不依赖任何state, 所以相当于componentDidMount
@@ -15,13 +19,45 @@ function Home() {
 
   }, [])
 
-  const handleClickCategoryTag = (id: number) :any => {
+  const handleClickCategoryTag = (id: number): any => {
     console.log("hi")
   }
 
-  const handleGoNewBookPage = () :any => {
+  const handleGoNewBookPage = (): any => {
     console.log("gogogo")
   }
+
+  const like = () => {
+    setLikes(1);
+    setDislikes(0);
+    setAction('liked');
+  };
+
+  const dislike = () => {
+    setLikes(0);
+    setDislikes(1);
+    setAction('disliked');
+  };
+
+  const actions = [
+    <span key="comment-basic-like">
+      <Tooltip title="Like">
+        {createElement(action === 'liked' ? LikeFilled : LikeOutlined, {
+          onClick: like,
+        })}
+      </Tooltip>
+      <span className="comment-action">{likes}</span>
+    </span>,
+    <span key=' key="comment-basic-dislike"'>
+      <Tooltip title="Dislike">
+        {React.createElement(action === 'disliked' ? DislikeFilled : DislikeOutlined, {
+          onClick: dislike,
+        })}
+      </Tooltip>
+      <span className="comment-action">{dislikes}</span>
+    </span>,
+    <span key="comment-basic-reply-to">Reply to</span>,
+  ];
 
   return (
     <div className="home-wrap">
@@ -30,15 +66,65 @@ function Home() {
         <div className="top-image link">
           <img src={require("../../assets/header.jpg")} alt="" />
         </div>
-        <div className="newBooksAndTags">
+        <div className="main">
+          <Divider orientation="left">
+            <h2 className="link" onClick={handleGoNewBookPage}>新书速递</h2>
+          </Divider>
           <div className="newBooks">
-            <Divider orientation="left">
-              <h2 className="link" onClick={handleGoNewBookPage}>新书速递</h2>
-            </Divider>
             {
               loadingNewBooks ? <NewBookSkeletons column={10} /> : null
             }
           </div>
+          <Divider orientation="left">
+            <h3>图书资讯</h3>
+          </Divider>
+          <div className="infomation">
+            <div className="info-carousel">
+              <Carousel dotPosition="right">
+                {
+                  homeInfo.map(item => <div className="carousel-all" key={item.id}>
+                    <div className="carousel-title title">
+                      {item.title}
+                    </div>
+                    <div className="carousel-tag meta">
+                      {item.tag}
+                    </div>
+                    <div className="carousel-intro text">
+                      {item.intro}
+                    </div>
+                  </div>)
+                }
+              </Carousel>
+            </div>
+          </div>
+          <Divider orientation="left" style={{ marginTop: 30 }}>
+            <h3>最受欢迎的书评</h3>
+          </Divider>
+          <div className="comment">
+            {
+              comment.map(item => <>
+                <Comment
+                  actions={actions}
+                  author={<a>Han Solo</a>}
+                  avatar={
+                    <img
+                      src={item.img}
+                      alt="Han Solo"
+                    />
+                  }
+                  content={
+                    <p>
+                      We supply a series of design principles, practical patterns and high quality design
+                      resources (Sketch and Axure), to help people create their product prototypes beautifully
+                      and efficiently.
+        </p>
+                  }
+                />
+              </>)
+            }
+          </div>
+        </div>
+        <div className="aside">
           <div className="asideTags">
             <Divider orientation="left">热门标签</Divider>
             <div className="tagsWrap">
@@ -61,25 +147,29 @@ function Home() {
               }
             </div>
           </div>
-        </div>
-        <div className="infomation">
-          <h2>图书资讯</h2>
-          <div className="info-carousel">
-            <Carousel dotPosition="right">
+          <div className="bookRank">
+            <Divider orientation="left">畅销图书榜</Divider>
+            <div className="rankList">
               {
-                homeInfo.map(item => <div key={item.id}>
-                  <div className="carousel-title">
-                    {item.title}
+                rankList.map((item, index) => <>
+                  {
+                    index === 0 ? <Divider dashed /> : null
+                  }
+                  <div className="rank-wrap link" key={index}>
+                    {/* <Link to={`/detail/${id}`}> */}
+                    {console.log(`${index < 3 ? "rank colorful" : "rank"}`)}
+                    <div className={`${index < 3 ? "rank colorful" : "rank"}`}>{item.rank}</div>
+                    <div className="title">
+                      <h3>{item.name}</h3>
+                      <p>{item.desc}</p>
+                    </div>
+                    <div className="gobuy">去购买</div>
+                    {/* </Link> */}
                   </div>
-                  <div className="carousel-tag">
-                    {item.tag}
-                  </div>
-                  <div className="carousel-intro">
-                    {item.intro}
-                  </div>
-                </div>)
+                  <Divider dashed />
+                </>)
               }
-            </Carousel>
+            </div>
           </div>
         </div>
       </div>

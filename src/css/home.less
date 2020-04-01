@@ -1,5 +1,4 @@
 .home-wrap {
-
   .home-main {
     width: 1040px;
     margin: 0 auto;
@@ -13,27 +12,47 @@
         height: 100%;
       }
     }
-    .newBooksAndTags {
+    .main {
       margin-top: 20px;
-      width: 100%;
-      display: flex;
+      width: 740px;
+      padding-right: 50px;
+      display: inline-block;
       .newBooks {
-        width: 740px;
         display: flex;
         flex-wrap: wrap;
-        padding-right: 40px;
         box-sizing: border-box;
+        justify-content: space-between;
+        margin-bottom: 50px;
         .card-container {
           margin-right: 25px;
           margin-bottom: 15px;
         }
-        .card-container:nth-of-type(6) {
-          margin-right: 0;
-        }
-        .card-container:nth-of-type(11) {
+        .card-container:nth-of-type(5n) {
           margin-right: 0;
         }
       }
+      .infomation {
+        margin-top: 20px;
+        width: 100%;
+        border: solid 1px #ddd;
+        border-radius: 2px;
+        padding-right: 15px;
+        box-sizing: border-box;
+        margin-bottom: 4px;
+        .carousel-all {
+          padding: 20px;
+        }
+      }
+      .comment {
+        .ant-comment-avatar img {
+          width: 75px;
+          height: 100px;
+        }
+      }
+    }
+    .aside {
+      width: 300px;
+      float: right;
       .asideTags {
         margin-top: 50px;
         flex: 1;
@@ -47,14 +66,35 @@
           cursor: pointer;
         }
       }
-    }
-    .infomation {
-      width: 700px;
-      border: solid 1px #ddd;
-      border-radius: 2px;
-      padding: 25px;
-      box-sizing: border-box;
-      margin-bottom: 4px;
+      .bookRank {
+        margin-top: 50px;
+        .rankList {
+          .rank-wrap {
+            display: flex;
+            .title {
+              margin-left: 20px;
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              p {
+                font-size: 14px;
+              }
+            }
+            .gobuy {
+              
+            }
+            .rank {
+              font-size: 30px;
+            }
+            .colorful {
+              -webkit-text-fill-color: transparent;
+              background-clip: text;
+              background-image: linear-gradient(180deg, #ffb821 0, #ff5c38 45%, #ff1459);
+            }
+          }
+        }
+      }
     }
   }
 }
