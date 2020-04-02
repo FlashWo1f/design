@@ -107,3 +107,8 @@ create-reate-app --template typescript design
   /* 上面是原有代码块 */
 
 ```
+
+
+server 可以参考douban  e91cb3743612252437896f79a815e44bb2bb545c
+在前端项目里面嵌入了一个node项目
+

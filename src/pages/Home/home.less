@@ -44,9 +44,16 @@
         }
       }
       .comment {
-        .ant-comment-avatar img {
+        .ant-comment-avatar {
           width: 75px;
-          height: 100px;
+          img {
+            width: 75px;
+            height: unset;
+            border-radius: 0;
+          }
+        }
+        .ant-comment-inner {
+          padding: 0;
         }
       }
     }

@@ -1,0 +1,62 @@
+.login-wrap {
+  width: 100%;
+  .login-top-main {
+      background: #edf4ed;
+      .login-top {
+        width: 1040px;
+        margin: 0 auto;
+        overflow: hidden;
+        padding: 22px 0 20px;
+        zoom: 1;
+        a {
+          text-decoration: none;
+          border: none;
+          -webkit-tap-highlight-color: rgba(0,0,0,0);
+        }
+        img {
+          width: 142px;
+        }
+    }
+  }
+  .login-main {
+    width: 1002px;
+    margin: 124px auto 0;
+    position: relative;
+    .login-left {
+      display: inline-block;
+      height: 584px;
+      width: 494px;
+      position: relative;
+      left: 50%;
+      margin-left: -432px;
+      vertical-align: top;
+      background: url(../../assets/login-left.png);
+      background-size: 100%;
+      overflow: visible;
+      .login-left-box {
+        height: 422px;
+        width: 195px;
+        margin: 48px 0 0 173px;
+        background-size: 100%;
+        .login-slide {
+          height: 422px;
+          width: 195px;
+          border-radius: 18px;
+          position: relative;
+          img {
+            width: 100%;
+            opacity: 0;
+            -webkit-transition: all 1s;
+            transition: all 1s;
+            position: absolute;
+            top: 0;
+            left: 0;
+          }
+          .on {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+}

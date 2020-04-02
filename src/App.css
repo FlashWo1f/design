@@ -68,3 +68,11 @@ h1, h2, h3, h4, h5, h6 {
 .ant-carousel .slick-dots li.slick-active button {
   background-color: #dddddd !important;
 }
+
+.ant-rate {
+  font-size: 13px;
+}
+
+.ant-rate-star:not(:last-child) {
+  margin-right: 4px;
+}

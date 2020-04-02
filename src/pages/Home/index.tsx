@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createElement } from 'react';
 import Header from '../../components/Header/index';
-import { Card, Divider, Tag, Carousel, Comment, Tooltip, Avatar } from 'antd'
-import "../../css/home.less"
+import { Card, Divider, Tag, Carousel, Comment, Tooltip, Rate } from 'antd'
+import "./home.less"
 import { NewBookSkeletons } from "../../skeletons"
 import { asideTags, homeInfo, rankList, comment } from "../../mock/home"
 import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
@@ -105,7 +105,7 @@ function Home() {
               comment.map(item => <>
                 <Comment
                   actions={actions}
-                  author={<a>Han Solo</a>}
+                  author={<div className="link">{item.title}</div>}
                   avatar={
                     <img
                       src={item.img}
@@ -113,13 +113,18 @@ function Home() {
                     />
                   }
                   content={
-                    <p>
-                      We supply a series of design principles, practical patterns and high quality design
-                      resources (Sketch and Axure), to help people create their product prototypes beautifully
-                      and efficiently.
-        </p>
+                    <>
+                      <div className="metaAndRate">
+                        <span className="commenter">{item.meta}</span>
+                        <span style={{ marginLeft: 10, marginRight: 10 }}>评论</span>
+                        <span className="comment-bname">{item.bookName}</span>
+                        <Rate allowHalf defaultValue={item.star} disabled />
+                      </div>
+                      <p>{item.desc}</p>
+                    </>
                   }
                 />
+                <Divider />
               </>)
             }
           </div>
@@ -157,7 +162,6 @@ function Home() {
                   }
                   <div className="rank-wrap link" key={index}>
                     {/* <Link to={`/detail/${id}`}> */}
-                    {console.log(`${index < 3 ? "rank colorful" : "rank"}`)}
                     <div className={`${index < 3 ? "rank colorful" : "rank"}`}>{item.rank}</div>
                     <div className="title">
                       <h3>{item.name}</h3>
