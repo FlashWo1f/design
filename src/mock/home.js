@@ -180,3 +180,52 @@ export const comment = [
   },
 
 ]
+
+export const detailInfo = {
+  id: 12,
+  name: "草仍然绿，水仍在流",
+  score: 4,
+  img: "https://img3.doubanio.com/view/subject/s/public/s33595640.jpg",
+  info: [
+    {
+      key: "author",
+      label: "作者",
+      value: "[加] 托马斯·金"
+    },
+    {
+      key: "publisher",
+      label: "出版社",
+      value: "南京大学出版社"
+    },
+    {
+      key: "originalName",
+      label: "原作名",
+      value: "Green Grass,Running Water"
+    },
+    {
+      key: "translatoer",
+      label: "译者",
+      value: "姚媛"
+    },
+    {
+      key: "pages",
+      label: "页数",
+      value: "496"
+    },
+    {
+      key: "author",
+      label: "价格",
+      value: "69"
+    },
+    {
+      key: "layout",
+      label: "装帧",
+      value: "平装"
+    },
+    {
+      key: "ISBN",
+      label: "ISBN",
+      value: "9787305180286"
+    },
+  ]
+}

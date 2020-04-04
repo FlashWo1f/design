@@ -1,17 +1,17 @@
-import React, { PureComponent } from 'react';
+import React, {  } from 'react';
 import { Input, Divider } from 'antd';
 import './index.less'
+import { withRouter } from "react-router-dom"
 import { ShoppingCartOutlined } from '@ant-design/icons';
 const { Search } = Input;
-
-function Header() {
+function Header(props: any) {
 
   const handleClickLogin = () => {
-
+    props.history.push("/login")
   }
 
   const handleClickReg = () => {
-
+    
   }
 
   return (
@@ -41,4 +41,4 @@ function Header() {
   )
 }
 
-export default Header
+export default withRouter(Header)

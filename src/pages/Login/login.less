@@ -58,5 +58,38 @@
         }
       }
     }
+    .login-right {
+      display: inline-block;
+      border: 1px solid #d8d8d8;
+      position: relative;
+      left: 50%;
+      margin-top: 25px;
+      margin-left: -46px;
+      vertical-align: top;
+      .account-body {
+        min-height: 450px;
+        width: 340px;
+        padding: 50px 30px 100px;
+        overflow: hidden;
+        position: relative;
+        background: #fff;
+        .account-body-tabs {
+          .ant-tabs-nav.ant-tabs-nav-animated {
+            width: 100%;
+            &:first-child {
+              width: 100%;
+            }
+            .ant-tabs-tab {
+              width: 50%;
+              text-align: center;
+              font-size: 20px;
+              &:first-child {
+                margin: 0;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

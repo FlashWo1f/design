@@ -80,16 +80,16 @@ function Home() {
           </Divider>
           <div className="infomation">
             <div className="info-carousel">
-              <Carousel dotPosition="right">
+              <Carousel dotPosition="right" autoplay>
                 {
                   homeInfo.map(item => <div className="carousel-all" key={item.id}>
-                    <div className="carousel-title title">
+                    <div className="carousel-title title link">
                       {item.title}
                     </div>
-                    <div className="carousel-tag meta">
+                    <div className="carousel-tag meta link">
                       {item.tag}
                     </div>
-                    <div className="carousel-intro text">
+                    <div className="carousel-intro text link">
                       {item.intro}
                     </div>
                   </div>)
