@@ -112,3 +112,16 @@ create-reate-app --template typescript design
 server 可以参考douban  e91cb3743612252437896f79a815e44bb2bb545c
 在前端项目里面嵌入了一个node项目
 
+## Sequelize 初步使用
+在 Node Web 开发过程中，后台数据库我一直使用的都是 Mysql。起初在做 Node Web 开发的时候，都是提前在 Mysql 图形界面里创建好数据表，然后再开始实际开发，这个过程一直穿插在整个项目的开发过程中。一个人在一台机器上，做全栈的开发，这个过程可能并不会出现什么问题，因为数据表结构以及整个项目代码都在一台电脑上，不管你怎么修改，都是一套代码，一个数据库结构。
+
+然而，当你需要在多台电脑之间协同工作的时候，你就会发现这种方式的弊端。比如在A电脑上修改了数据表结构之后，接着去B电脑上继续编码，我们虽然能通过Git同步代码，但是数据表结构却无法同步过去，我们就需要在B电脑上，手动将数据库结构维护成一致，否则无法接着进行。这种操作方式非常的不方便，而且很LOW。
+
+而 Sequelize 框架就能很好的解决这个问题，通过 Sequelize 框架，我们将每个数据表直接定义为数据模型，通过调用数据模型的一些方法，就可以直接操作数据库，甚至是同步数据表结构。
+
+
+## 创建数据库
+
+1. 管理员权限进入cmd, 进入mysql的bin文件夹
+2. mysql -u root -p 输入密码进入数据库(前提是mysql服务已经开着)
+3. CREATE DATABASE IF NOT EXISTS design DEFAULT CHARSET utf8 COLLATE utf8_general_ci; use design;(默认设置utf-8)
