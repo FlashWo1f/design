@@ -1,4 +1,5 @@
 import React from 'react'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Card, Skeleton } from 'antd'
 import loadingSvg from "../assets/loading.svg";
 import './index.less'

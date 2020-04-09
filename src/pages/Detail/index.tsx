@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React, { useState, useEffect } from "react";
 import Header from '../../components/Header'
 import { detailInfo } from '../../mock/home'
@@ -35,6 +36,22 @@ export default function () {
           <div className="detail-desc">
             <Divider orientation="left">
               <h3>内容简介</h3>
+            </Divider>
+            {
+              detailInfo.titleIntro.map(item => <p>
+                {item}
+              </p>)
+            }
+            <p>🕳 内容简介</p>
+            {
+              detailInfo.conIntro.map(item => <p>
+                {item}
+              </p>)
+            }
+          </div>
+          <div className="detail-shortComm">
+            <Divider orientation="left">
+              <h3>短评</h3>
             </Divider>
           </div>
         </div>

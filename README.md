@@ -119,9 +119,27 @@ server 可以参考douban  e91cb3743612252437896f79a815e44bb2bb545c
 
 而 Sequelize 框架就能很好的解决这个问题，通过 Sequelize 框架，我们将每个数据表直接定义为数据模型，通过调用数据模型的一些方法，就可以直接操作数据库，甚至是同步数据表结构。
 
+```node
+node server/db
+就创建了表，太舒服了
+```
+
 
 ## 创建数据库
 
 1. 管理员权限进入cmd, 进入mysql的bin文件夹
 2. mysql -u root -p 输入密码进入数据库(前提是mysql服务已经开着)
 3. CREATE DATABASE IF NOT EXISTS design DEFAULT CHARSET utf8 COLLATE utf8_general_ci; use design;(默认设置utf-8)
+
+## css
+text-indent 首行文本缩进
+
+
+## 跨域
+本地服务在9094端口，前端在3000端口，即使是本地，端口不一样还是跨域的
+
+## bug
+添加了setupProxy.js文件
+paths文件中也导出了
+proxySetup: resolveApp('src/setupProxy.js')
+但是就是没用

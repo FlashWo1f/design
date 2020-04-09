@@ -5,6 +5,7 @@ import "./home.less"
 import { NewBookSkeletons } from "../../skeletons"
 import { asideTags, homeInfo, rankList, comment } from "../../mock/home"
 import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { Meta } = Card;
 
 function Home() {
@@ -12,6 +13,7 @@ function Home() {
   const [likes, setLikes] = useState(0);
   const [dislikes, setDislikes] = useState(0);
   const [action, setAction] = useState<any>(null)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loadingNewBooks, setLoadingNewBooks] = useState(true)
 
   // 第二参数为空数组, 不依赖任何state, 所以相当于componentDidMount

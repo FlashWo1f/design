@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Tabs, Form, Input, Button } from "antd";
 import './login.less'
+import { userRegister } from "../../api/user";
 
 const { TabPane } = Tabs;
 
@@ -23,6 +24,7 @@ export default function () {
 
   }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
   const layout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 16 },
@@ -32,8 +34,13 @@ export default function () {
     wrapperCol: { offset: 8, span: 16 },
   };
 
-  const onFinish = (values :any) => {
+  const onFinish = (values: any) => {
     console.log(values)
+    userRegister({a:1})
+  }
+
+  const onFinishRegister = () => {
+
   }
 
   return (
@@ -66,13 +73,13 @@ export default function () {
                     name="basic"
                     initialValues={{ remember: true }}
                     onFinish={onFinish}
-                    // onFinishFailed={onFinishFailed}
+                  // onFinishFailed={onFinishFailed}
                   >
                     <Form.Item
                       name="username"
                       rules={[{ required: true, message: 'Please input your username!' }]}
                     >
-                      <Input placeholder="账号" />
+                      <Input placeholder="账号 / 手机号" />
                     </Form.Item>
                     <Form.Item
                       name="password"
@@ -88,13 +95,48 @@ export default function () {
                   </Form>
                 </TabPane>
                 <TabPane tab="注册" key="2">
-                  Content of Tab Pane 2
+                  <Form
+                    name="basic"
+                    initialValues={{ remember: true }}
+                    onFinish={onFinishRegister}
+                  // onFinishFailed={onFinishFailed}
+                  >
+                    <Form.Item
+                      name="username"
+                      rules={[{ required: true, message: 'Please input your username!' }]}
+                    >
+                      <Input placeholder="账号 / 手机号" />
+                    </Form.Item>
+                    <Form.Item
+                      name="username"
+                      rules={[{ required: true, message: 'Please input your username!' }]}
+                    >
+                      <Input placeholder="取个昵称吧" />
+                    </Form.Item>
+                    <Form.Item
+                      name="password"
+                      rules={[{ required: true, message: 'Please input your password!' }]}
+                    >
+                      <Input.Password placeholder="密码" />
+                    </Form.Item>
+                    <Form.Item
+                      name="repeatPassword"
+                      rules={[{ required: true, message: 'Please input your password!' }]}
+                    >
+                      <Input.Password placeholder="确认密码" />
+                    </Form.Item>
+                    <Form.Item {...tailLayout}>
+                      <Button type="primary" htmlType="submit">
+                        Submit
+                      </Button>
+                    </Form.Item>
+                  </Form>
                 </TabPane>
               </Tabs>
             </div>
             <div className="account-form-3rd">
               <div className="account-form-3rd-hd">
-                
+
               </div>
             </div>
           </div>

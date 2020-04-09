@@ -18,6 +18,7 @@ function Header(props: any) {
     <div className="header-wrap">
       <div className="nav-primary">
         <div className="nav-logo">
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
           <a href="">豆瓣读书</a>
         </div>
         <div className="nav-search">
