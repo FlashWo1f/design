@@ -124,6 +124,16 @@ node server/db
 就创建了表，太舒服了
 ```
 
+### 查询表的内容
+```js
+const account = sequelize.define('account', {})
+// 在其他文件中
+const sequelize = require('./db')
+const account = sequelize.model('account')
+// res 即account里面的数据数组
+account.findAll().then(res => console.log(res))
+Array.isArray(res)  // true
+```
 
 ## 创建数据库
 
@@ -143,3 +153,31 @@ text-indent 首行文本缩进
 paths文件中也导出了
 proxySetup: resolveApp('src/setupProxy.js')
 但是就是没用
+
+放弃代理，直接在请求头和响应头里做处理
+
+```js
+// /server/server.js
+app.all('*', function (req, res, next) {
+  console.log("req", req.connection.remoteAddress)
+  res.header("Access-Control-Allow-Origin", "http://192.168.0.13:3000");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("X-Powered-By", '3.2.1')
+  res.header("Content-Type", "application/json;charset=utf-8");
+  next();
+});
+// /src/api/index.ts
+headers: {
+  // 设置
+  'Content-Type': 'application/x-www-form-urlencoded',
+  "origin": "http://192.168.0.13:3000",
+  // 'Access-Control-Allow-Origin': '*'
+  // "Access-Control-Allow-Credentials": "true"
+},
+// 前端起的服务要和上面的origin一致  所以不能用localhost
+
+// 综上还是会在控制台打印出
+// xhr.js:126 Refused to set unsafe header "origin"
+```

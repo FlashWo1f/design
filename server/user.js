@@ -16,32 +16,48 @@ const account = sequelize.model('account')
 // transmitlist.belongsTo(account, {foreignKey: 'user_id', targetKey: 'user_id'});
 
 // const utility  = require('utility')
-
 Router.post('/register', function(req, res) {
   // 用户注册
-  const body = req.body.userinfo
+  const body = req.body
+  console.log("lululu", body)
   const { userName, pwd, userId } = body
   const data = {
-    userName: userName,
+    userName,
     // pwd: pwdMd5(pwd),
-    pwd: pwd,
+    pwd,
     userId,
-    create_temp: new Date().getTime(),
-    user_id: pwdMd5(Date.now())
+    createTemp: new Date().getTime(),
+    // user_id: pwdMd5(Date.now())
   }
+  // account.create(data) => 放入数据去mysql
   account.create(data).then(doc => {
-    console.log("hahaha", doc)
-    // const {user_name, user_id, user_info, avatar} = doc
-    // res.cookie('user_id', user_id)
-    // return res.json({
-    //   code: 0,
-    //   data: {
-    //     user_name: user_name,
-    //     user_id: user_id,
-    //     user_info: user_info,
-    //     avatar: avatar
-    //   }
-    // })
+    // console.log("hahaha", doc)
+    const {userName, userId} = doc
+    // const {userName, userId, user_info, avatar} = doc
+    res.cookie('userId', userId)
+    return res.json({
+      code: 0,
+      success: true,
+      error: null,
+      data: {
+        userName: userName,
+        userId: userId,
+      }
+    })
+  },
+  error => {
+    // sqlMessage 数据库错误信息
+    const { errors, parent: { code } } = error
+    // console.log("error", errors[0].type, code)
+    if (errors[0].type) {
+      if (code === "ER_DUP_ENTRY") {
+        return res.json({
+          code: -1,
+          success: false,
+          error: "该账号已被注册，直接登录吧~"
+        })
+      }
+    }
   })
 })
 

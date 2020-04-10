@@ -36,7 +36,7 @@ export default function () {
 
   const onFinish = (values: any) => {
     console.log(values)
-    userRegister({a:1})
+    userRegister({userName: "xiaoawei", pwd: "12345678", userId: "15870907594"})
   }
 
   const onFinishRegister = () => {

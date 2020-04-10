@@ -6,13 +6,15 @@ import qs from 'qs'
 let config = {
   // `baseURL` 将自动加在 `url` 前面，除非 `url` 是一个绝对 URL。
   // 它可以通过设置一个 `baseURL` 便于为 axios 实例的方法传递相对 URL
-  baseURL: "http://localhost:9094/api",
+  baseURL: "http://localhost:9094",
   // `withCredentials` 表示跨域请求时是否需要使用凭证（登陆的时候会有cookie这个时候要用到）
   withCredentials: true,
   headers: {
     // 设置
     'Content-Type': 'application/x-www-form-urlencoded',
-    'Access-Control-Allow-Origin': '*'
+    "origin": "http://192.168.0.13:3000",
+    // 'Access-Control-Allow-Origin': '*'
+    // "Access-Control-Allow-Credentials": "true"
   },
   transformRequest: [function (data: any) {
     // 处理发送前的数据
