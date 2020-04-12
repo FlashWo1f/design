@@ -39,8 +39,8 @@ export default function () {
     userRegister({userName: "xiaoawei", pwd: "12345678", userId: "15870907594"})
   }
 
-  const onFinishRegister = () => {
-
+  const onFinishRegister = (value: Object) => {
+    const {  } = value 
   }
 
   return (
@@ -77,19 +77,19 @@ export default function () {
                   >
                     <Form.Item
                       name="username"
-                      rules={[{ required: true, message: 'Please input your username!' }]}
+                      rules={[{ required: true, message: '请输入账号 / 手机号!' }]}
                     >
                       <Input placeholder="账号 / 手机号" />
                     </Form.Item>
                     <Form.Item
                       name="password"
-                      rules={[{ required: true, message: 'Please input your password!' }]}
+                      rules={[{ required: true, message: '请输入密码!' }]}
                     >
                       <Input.Password placeholder="密码" />
                     </Form.Item>
                     <Form.Item {...tailLayout}>
                       <Button type="primary" htmlType="submit">
-                        Submit
+                        登录
                       </Button>
                     </Form.Item>
                   </Form>
@@ -103,31 +103,41 @@ export default function () {
                   >
                     <Form.Item
                       name="username"
-                      rules={[{ required: true, message: 'Please input your username!' }]}
+                      rules={[{ required: true, message: '请输入账号或者手机号!' }]}
                     >
                       <Input placeholder="账号 / 手机号" />
                     </Form.Item>
                     <Form.Item
                       name="username"
-                      rules={[{ required: true, message: 'Please input your username!' }]}
+                      rules={[{ required: true, message: '请填写昵称!' }]}
                     >
                       <Input placeholder="取个昵称吧" />
                     </Form.Item>
                     <Form.Item
                       name="password"
-                      rules={[{ required: true, message: 'Please input your password!' }]}
+                      rules={[{ required: true, message: '请输入您的密码!' }]}
                     >
                       <Input.Password placeholder="密码" />
                     </Form.Item>
                     <Form.Item
                       name="repeatPassword"
-                      rules={[{ required: true, message: 'Please input your password!' }]}
+                      rules={[
+                        { required: true, message: '请再重复一次密码!' },
+                        ({ getFieldValue }) => ({
+                          validator(rule, value) {
+                            if (!value || getFieldValue('password') === value) {
+                              return Promise.resolve();
+                            }
+                            return Promise.reject('两次密码不匹配!');
+                          },
+                        })
+                      ]}
                     >
                       <Input.Password placeholder="确认密码" />
                     </Form.Item>
                     <Form.Item {...tailLayout}>
                       <Button type="primary" htmlType="submit">
-                        Submit
+                        注册
                       </Button>
                     </Form.Item>
                   </Form>

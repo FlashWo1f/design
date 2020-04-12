@@ -42,7 +42,72 @@ const account = sequelize.define(
   }
 )
 account.sync();
-// account.findAll().then(res => console.log("??????????????????????????????", res, "!!!!!!!!!!!!!!!!!!!!!!!11", Array.isArray(res)))
+const book = sequelize.define(
+  'book',
+  {
+    "ISBN": {
+      'type': Sequelize.STRING,
+      'primaryKey': true,
+      'allowNull': false,
+      'unique': true
+    },
+    "bookName": {
+      'type': Sequelize.STRING,
+      'allowNull': false,
+    },
+    "img": {
+      'type': Sequelize.STRING,
+    },
+    "score": {
+      'type': Sequelize.FLOAT,
+    },
+    "titleIntro": {
+      'type': Sequelize.TEXT,
+    },
+    "conIntro": {
+      'type': Sequelize.TEXT,
+    },
+  }
+)
+book.sync()
+
+const bookInfo = sequelize.define(
+  'bookInfo',
+  {
+    author: {
+      'type': Sequelize.JSON
+    },
+    publisher: {
+      'type': Sequelize.JSON
+    },
+    originalName: {
+      'type': Sequelize.JSON
+    },
+    translatoer: {
+      'type': Sequelize.JSON
+    },
+    pages: {
+      'type': Sequelize.JSON
+    },
+    price: {
+      'type': Sequelize.JSON
+    },
+    layout: {
+      'type': Sequelize.JSON
+    },
+    ISBN: {
+      'type': Sequelize.STRING,
+      'allowNull': false,
+      'references': {
+        'model': 'books',
+        'key': 'ISBN'
+      }
+    },
+  }
+)
+bookInfo.sync()
+
+
 sequelize.authenticate().then(() => {
   console.log('Connection has been established successfully.');
 }).catch(err => {

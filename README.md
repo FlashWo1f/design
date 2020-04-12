@@ -113,6 +113,7 @@ server 可以参考douban  e91cb3743612252437896f79a815e44bb2bb545c
 在前端项目里面嵌入了一个node项目
 
 ## Sequelize 初步使用
+https://sequelize.org/
 在 Node Web 开发过程中，后台数据库我一直使用的都是 Mysql。起初在做 Node Web 开发的时候，都是提前在 Mysql 图形界面里创建好数据表，然后再开始实际开发，这个过程一直穿插在整个项目的开发过程中。一个人在一台机器上，做全栈的开发，这个过程可能并不会出现什么问题，因为数据表结构以及整个项目代码都在一台电脑上，不管你怎么修改，都是一套代码，一个数据库结构。
 
 然而，当你需要在多台电脑之间协同工作的时候，你就会发现这种方式的弊端。比如在A电脑上修改了数据表结构之后，接着去B电脑上继续编码，我们虽然能通过Git同步代码，但是数据表结构却无法同步过去，我们就需要在B电脑上，手动将数据库结构维护成一致，否则无法接着进行。这种操作方式非常的不方便，而且很LOW。
@@ -122,6 +123,8 @@ server 可以参考douban  e91cb3743612252437896f79a815e44bb2bb545c
 ```node
 node server/db
 就创建了表，太舒服了
+node server/server
+创建服务
 ```
 
 ### 查询表的内容
@@ -156,11 +159,17 @@ proxySetup: resolveApp('src/setupProxy.js')
 
 放弃代理，直接在请求头和响应头里做处理
 
+将Header导入app.tsx，因为header中用了withRouter报错。
+You should not use <withRouter(Header) /> outside a <Router>
+用useHistory又报错
+Cannot read property 'history' of undefined
+return useContext(Context).history
+
 ```js
 // /server/server.js
 app.all('*', function (req, res, next) {
   console.log("req", req.connection.remoteAddress)
-  res.header("Access-Control-Allow-Origin", "http://192.168.0.13:3000");
+  res.header("Access-Control-Allow-Origin", "http://192.168.0.110:3000");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
   res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
   res.header("Access-Control-Allow-Credentials", "true");
@@ -172,7 +181,7 @@ app.all('*', function (req, res, next) {
 headers: {
   // 设置
   'Content-Type': 'application/x-www-form-urlencoded',
-  "origin": "http://192.168.0.13:3000",
+  "origin": "http://192.168.0.110:3000",
   // 'Access-Control-Allow-Origin': '*'
   // "Access-Control-Allow-Credentials": "true"
 },

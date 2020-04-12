@@ -2,6 +2,7 @@
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Detail from '../pages/Detail';
+import Cart from '../pages/Cart'
 import NotFound from '../pages/NotFound';
 
 export default [
@@ -16,6 +17,10 @@ export default [
   {
     path: '/detail/:id',
     component: Detail
+  },
+  {
+    path: '/cart',
+    component: Cart
   },
   {
     path: '/404',

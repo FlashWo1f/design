@@ -1,15 +1,16 @@
 import React, { useState, useEffect, createElement } from 'react';
-import Header from '../../components/Header/index';
-import { Card, Divider, Tag, Carousel, Comment, Tooltip, Rate } from 'antd'
+import Header from '../../components/Header';
+import { Card, Divider, Tag, Carousel, Comment, Tooltip, Rate, Button } from 'antd'
 import "./home.less"
 import { NewBookSkeletons } from "../../skeletons"
 import { asideTags, homeInfo, rankList, comment } from "../../mock/home"
 import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
+import { getBookDetail } from "../../api/book"
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { Meta } = Card;
 
-function Home() {
-
+function Home(props:any) {
+  console.log("hoime", props)
   const [likes, setLikes] = useState(0);
   const [dislikes, setDislikes] = useState(0);
   const [action, setAction] = useState<any>(null)
@@ -41,6 +42,10 @@ function Home() {
     setAction('disliked');
   };
 
+  const TEST = () => {
+    getBookDetail({ISBN: "9787512511996"})
+  }
+
   const actions = [
     <span key="comment-basic-like">
       <Tooltip title="Like">
@@ -64,6 +69,7 @@ function Home() {
   return (
     <div className="home-wrap">
       <Header />
+      <Button onClick={TEST}>SADASD </Button>
       <div className="home-main">
         <div className="top-image link">
           <img src={require("../../assets/header.jpg")} alt="" />

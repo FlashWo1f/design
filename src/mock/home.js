@@ -213,7 +213,7 @@ export const detailInfo = {
       value: "496"
     },
     {
-      key: "author",
+      key: "price",
       label: "价格",
       value: "69"
     },
