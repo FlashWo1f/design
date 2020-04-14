@@ -3,16 +3,42 @@ import React, { useState, useEffect } from "react";
 import Header from '../../components/Header'
 import { detailInfo } from '../../mock/home'
 import { Rate, Divider } from 'antd'
+import { getBookDetail } from "../../api/book"
 import './detail.less'
 
-export default function () {
+export default function (props: any) {
 
+  const [myISBN, setMyISBN] = useState(props.match.params.id)
+  const [isGetInfo, setIsGetInfo] = useState(false)
+  const [bookDetail, setBookDetail] = useState<any>({})
+
+  useEffect(() => {
+    getBookDetail({ ISBN: myISBN }).then(res => {
+      console.log("zzz111", res)
+      const { data: { success = false, data } } = res
+      if (success) {
+        const info = []
+        for(let key in data) {
+          console.log("111", key)
+          if (typeof data[key] === "object" && data[key]["label"]) {
+            info.push(data[key])
+          }
+        }
+        data.info = info
+        setBookDetail(data)
+        setIsGetInfo(true)
+      }
+    })
+  }, [myISBN])
+  
+  const { book, info } = bookDetail
+  // console.log("kelong", book, info) 
 
   return (
     <div className="detail-wrap">
       <Header />
       <div className="detail-body">
-        <h1 className="title">草仍然绿，水仍在流</h1>
+        <h1 className="title">{isGetInfo && book.bookName}</h1>
         <div className="main">
           <div className="detail-info">
             <div className="detail-info-image">
@@ -20,7 +46,7 @@ export default function () {
             </div>
             <div className="detail-info-logs">
               {
-                detailInfo.info.map((item) => <>
+                isGetInfo && Array.isArray(info) && info.map((item: any) => <>
                   <div className="log">
                     <span className="log-key">{item.label}:&nbsp;&nbsp;</span>
                     <span className="log-value">{item.value}</span>

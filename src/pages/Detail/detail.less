@@ -21,6 +21,12 @@
           .log-key {
             color: #666666;
           }
+          // 骚css技巧
+          .log-value {
+            &:empty::before {
+              content: "无";
+            }
+          }
         }
       }
       .detail-info-score {

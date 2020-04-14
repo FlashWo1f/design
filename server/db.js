@@ -58,6 +58,9 @@ const book = sequelize.define(
     "img": {
       'type': Sequelize.STRING,
     },
+    "author": {
+      'type': Sequelize.STRING,
+    },
     "score": {
       'type': Sequelize.FLOAT,
     },

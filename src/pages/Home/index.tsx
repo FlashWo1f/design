@@ -5,21 +5,27 @@ import "./home.less"
 import { NewBookSkeletons } from "../../skeletons"
 import { asideTags, homeInfo, rankList, comment } from "../../mock/home"
 import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
-import { getBookDetail } from "../../api/book"
+import { getBookDetail, getAllBook } from "../../api/book"
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { Meta } = Card;
 
 function Home(props:any) {
-  console.log("hoime", props)
   const [likes, setLikes] = useState(0);
   const [dislikes, setDislikes] = useState(0);
+  const [books, setBooks] = useState([])
   const [action, setAction] = useState<any>(null)
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loadingNewBooks, setLoadingNewBooks] = useState(true)
 
   // 第二参数为空数组, 不依赖任何state, 所以相当于componentDidMount
   useEffect(() => {
-
+    getAllBook()
+      .then(({data = {}}) => {
+        if (data.success) {
+          setLoadingNewBooks(false)
+          setBooks(data.data)
+        }
+      })
   }, [])
 
   const handleClickCategoryTag = (id: number): any => {
@@ -28,6 +34,10 @@ function Home(props:any) {
 
   const handleGoNewBookPage = (): any => {
     console.log("gogogo")
+  }
+
+  const handleGoDetail = (ISBN:String) => {
+    props.history.push(`/detail/${ISBN}`)
   }
 
   const like = () => {
@@ -44,6 +54,30 @@ function Home(props:any) {
 
   const TEST = () => {
     getBookDetail({ISBN: "9787512511996"})
+  }
+
+  const homeBooks = () => {
+    return (
+      <div className="newBooks">
+        {
+          Array.isArray(books) && books.map((item:any) => 
+            <div className="card-container link" onClick={() => handleGoDetail(item.ISBN)}>
+              <Card 
+                className="books-card"
+                // bordered={false}
+                cover={
+                  <div className="book-img-box">
+                    <img src={item.img} alt="loading"/>
+                  </div>
+                }
+              >
+                <Meta title={item.bookName} description={item.author} />
+              </Card>
+            </div>
+          )
+        }
+      </div>
+    )
   }
 
   const actions = [
@@ -80,7 +114,7 @@ function Home(props:any) {
           </Divider>
           <div className="newBooks">
             {
-              loadingNewBooks ? <NewBookSkeletons column={10} /> : null
+              loadingNewBooks ? <NewBookSkeletons column={10} /> : homeBooks()
             }
           </div>
           <Divider orientation="left">

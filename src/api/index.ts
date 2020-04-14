@@ -12,7 +12,7 @@ let config = {
   headers: {
     // 设置
     'Content-Type': 'application/x-www-form-urlencoded',
-    "origin": "http://192.168.0.110:3000",
+    "origin": "http://192.168.137.1:3000",
     // 'Access-Control-Allow-Origin': '*'
     // "Access-Control-Allow-Credentials": "true"
   },
@@ -53,7 +53,7 @@ const get = (url: string, params: Object) => {
   return axios.get(url, config)
 }
 
-const post = (url: string, params: Object) => {
+const post = (url: string, params?: Object) => {
   return axios.post(url, params, config)
 }
 

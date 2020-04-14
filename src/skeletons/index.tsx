@@ -19,7 +19,7 @@ export function NewBookSkeletons(props: ICardList) {
             <div className="card-container" key={index}>
               <Card 
                 loading={true}
-                className="books-card"
+                className="books-skeletons-card"
                 // bordered={false}
                 cover={
                   <div className="loading-img-box">
