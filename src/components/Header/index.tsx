@@ -3,6 +3,7 @@ import { Input, Divider } from 'antd';
 import './index.less'
 import { withRouter } from "react-router-dom"
 import { ShoppingCartOutlined } from '@ant-design/icons';
+import { isAuthority } from "../../utils"
 const { Search } = Input;
 function Header(props: any) {
 
@@ -12,6 +13,11 @@ function Header(props: any) {
 
   const handleClickReg = () => {
     
+  }
+
+  const handleGoCart = () => {
+    const auth = isAuthority()
+    auth && props.history.push("/cart")
   }
 
   return (
@@ -28,9 +34,9 @@ function Header(props: any) {
       <Divider />
       <div className="nav-links">
         <div className="nav-link link">购书单</div>
-        <div className="nav-link link">2019年度榜单</div>
+        <div className="nav-link link" onClick={() => window.open("https://book.douban.com/annual/2019?source=navigation", "_blank")}>2019年度榜单</div>
         <div className="nav-link link">豆瓣书店</div>
-        <div className="nav-link link">
+        <div className="nav-link link" onClick={handleGoCart}>
           <ShoppingCartOutlined style={{ fontSize: 18, marginRight: 5 }} />
           购物车
         </div>

@@ -165,11 +165,19 @@ You should not use <withRouter(Header) /> outside a <Router>
 Cannot read property 'history' of undefined
 return useContext(Context).history
 
+### 图片
+
+请求图片403问题。 豆瓣对请求源做了处理
+需要我们在html的meta中加入
+```html
+<meta name="referrer" content="no-referrer">
+```
+
 ```js
 // /server/server.js
 app.all('*', function (req, res, next) {
   console.log("req", req.connection.remoteAddress)
-  res.header("Access-Control-Allow-Origin", "http://192.168.137.1:3000");
+  res.header("Access-Control-Allow-Origin", "http://192.168.0.13:3000");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
   res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
   res.header("Access-Control-Allow-Credentials", "true");
@@ -181,7 +189,7 @@ app.all('*', function (req, res, next) {
 headers: {
   // 设置
   'Content-Type': 'application/x-www-form-urlencoded',
-  "origin": "http://192.168.137.1:3000",
+  "origin": "http://192.168.0.13:3000",
   // 'Access-Control-Allow-Origin': '*'
   // "Access-Control-Allow-Credentials": "true"
 },

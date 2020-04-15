@@ -7,5 +7,5 @@ export function getBookDetail(params:any) {
 }
 
 export function getAllBook() {
-  return post("/book/allbook")
+  return post("http://localhost:9094/book/allbook")
 }

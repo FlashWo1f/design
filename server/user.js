@@ -4,6 +4,8 @@ const Router = express.Router()
 
 const sequelize = require('./db')
 const account = sequelize.model('account')
+const book = sequelize.model('book')
+const bookInfo = sequelize.model('bookInfo')
 // const poetrylist = sequelize.model('poetrylist')
 // const guestbook = sequelize.model('guestbook')
 // const supportlist = sequelize.model('supportlist')
@@ -14,8 +16,42 @@ const account = sequelize.model('account')
 // guestbook.belongsTo(account, {foreignKey: 'user_id', targetKey: 'user_id'});
 // poetrylist.belongsTo(account, {foreignKey: 'user_id', targetKey: 'user_id'});
 // transmitlist.belongsTo(account, {foreignKey: 'user_id', targetKey: 'user_id'});
-
 // const utility  = require('utility')
+
+// account.hasMany(book, {foreignKey: 'books', targetKey: 'ISBN'})
+account.create({
+  userId: "18879349607",
+  userName: "李某",
+  pwd: "211335246",
+  avatar: "https://img.yzcdn.cn/vant/logo.png",
+  books: "10019-1985;9787535735508"
+})
+
+const tureRes = {
+  success: true,
+  error: null,
+  code: 0
+}
+
+Router.post('/getbooks', function(req, res) {
+  // 获取用户购物车的书，
+  const { books } = req.body
+  const booksArr = books.split(";")
+  bookInfo.findAndCountAll({
+    include: book,
+    where: {
+      ISBN: {
+        $in: booksArr
+      }
+    }
+  }).then(ret => {
+    res.json({
+      data: ret,
+      ...tureRes
+    })
+  })
+})
+
 Router.post('/register', function(req, res) {
   // 用户注册
   const body = req.body

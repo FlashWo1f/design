@@ -35,9 +35,9 @@ const account = sequelize.define(
       'type': Sequelize.STRING,
       'allowNull': true
     },
-    'createTemp': {
-      'type': Sequelize.DATE,
-      'defaultValue': Sequelize.NOW,
+    // mysql 不能存数组  可惜
+    "books": {
+      'type': Sequelize.STRING
     },
   }
 )
@@ -100,7 +100,9 @@ const bookInfo = sequelize.define(
     },
     ISBN: {
       'type': Sequelize.STRING,
+      'unique': true,
       'allowNull': false,
+      primaryKey: true,
       'references': {
         'model': 'books',
         'key': 'ISBN'

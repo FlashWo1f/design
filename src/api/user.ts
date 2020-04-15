@@ -4,3 +4,7 @@ import { get, post } from './index';
 export function userRegister(params: Object) {
   return post('/user/register', params)
 }
+
+export function getBookCart(params: Object) {
+  return post('/user/getbooks', params)
+}
