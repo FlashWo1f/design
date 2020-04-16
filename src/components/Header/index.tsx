@@ -28,7 +28,7 @@ function Header(props: any) {
           <a href="">豆瓣读书</a>
         </div>
         <div className="nav-search">
-          <Search placeholder="书名、作者、ISBN" onSearch={value => console.log(value)} enterButton />
+          <Search placeholder="ISBN" onSearch={value => console.log(value)} enterButton />
         </div>
       </div>
       <Divider />

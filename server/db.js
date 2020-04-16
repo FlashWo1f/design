@@ -112,6 +112,30 @@ const bookInfo = sequelize.define(
 )
 bookInfo.sync()
 
+const comment = sequelize.define('comment', {
+  text: Sequelize.STRING,
+  score: Sequelize.STRING,
+  userId: {
+    'type': Sequelize.STRING,
+    'allowNull': false,
+    'references': {
+      'model': 'accounts',
+      'key': 'userId'
+    }
+  },
+  ISBN: {
+    'type': Sequelize.STRING,
+    'allowNull': false,
+    'references': {
+      'model': 'books',
+      'key': 'ISBN'
+    }
+  },
+  like: Sequelize.INTEGER,
+  dislike: Sequelize.INTEGER
+})
+
+comment.sync()
 
 sequelize.authenticate().then(() => {
   console.log('Connection has been established successfully.');

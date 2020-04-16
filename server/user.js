@@ -23,8 +23,24 @@ account.create({
   userId: "18879349607",
   userName: "李某",
   pwd: "211335246",
-  avatar: "https://img.yzcdn.cn/vant/logo.png",
+  avatar: "https://game.gtimg.cn/images/lol/act/img/champion/Leblanc.png",
   books: "10019-1985;9787535735508"
+})
+
+account.create({
+  userId: "18822223333",
+  userName: "张某",
+  pwd: "12345678",
+  avatar: "https://game.gtimg.cn/images/lol/act/img/champion/Vladimir.png",
+  books: "9787512511996;9787559638083;9787208151345"
+})
+
+account.create({
+  userId: "18833334444",
+  userName: "曹子孝",
+  pwd: "12345678",
+  avatar: "https://game.gtimg.cn/images/lol/act/img/champion/Kassadin.png",
+  books: "9787512511996;9787559638083;9787208151345"
 })
 
 const tureRes = {
@@ -96,7 +112,20 @@ Router.post('/register', function(req, res) {
     }
   })
 })
-
+// 获取所有用户  待测试
+Router.get('/getalluser', function(req,res) {
+  // 用户列表
+  account.findAll({
+    order: [ // 使用order进行排序
+      ['createdAt'],
+    ]
+  }).then(doc => {
+    return res.json({
+      code: 0,
+      data: doc
+    })
+  })
+})
 // 我们自己对原始的MD5进行复杂度调整
 function pwdMd5(pwd) {
   const salt = 'Ethan_is_man_56good#@!45$sss$453%^&9**~~~~``'

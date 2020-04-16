@@ -1,6 +1,6 @@
 import React, { useState, useEffect, createElement } from 'react';
 import Header from '../../components/Header';
-import { Card, Divider, Tag, Carousel, Comment, Tooltip, Rate, Button } from 'antd'
+import { Card, Divider, Tag, Carousel, Comment, Tooltip, Rate, Button, Popover } from 'antd'
 import "./home.less"
 import { NewBookSkeletons } from "../../skeletons"
 import { asideTags, homeInfo, rankList, comment } from "../../mock/home"
@@ -52,27 +52,26 @@ function Home(props:any) {
     setAction('disliked');
   };
 
-  const TEST = () => {
-    getBookDetail({ISBN: "9787512511996"})
-  }
-
   const homeBooks = () => {
     return (
       <div className="newBooks">
         {
           Array.isArray(books) && books.map((item:any) => 
             <div className="card-container link" onClick={() => handleGoDetail(item.ISBN)}>
-              <Card 
-                className="books-card"
-                // bordered={false}
-                cover={
-                  <div className="book-img-box">
-                    <img src={item.img} alt="loading"/>
-                  </div>
-                }
-              >
-                <Meta title={item.bookName} description={item.author} />
-              </Card>
+              <Popover placement="right" title={<span>{`《${item.bookName}》简介`}</span>} content={ <p>{item.titleIntro}</p>} trigger="hover">
+                <Card 
+                  className="books-card"
+                  // bordered={false}
+                  hoverable
+                  cover={
+                    <div className="book-img-box">
+                      <img src={item.img} alt="loading"/>
+                    </div>
+                  }
+                >
+                  <Meta title={item.bookName} description={item.author} />
+                </Card>
+              </Popover>
             </div>
           )
         }
@@ -103,7 +102,6 @@ function Home(props:any) {
   return (
     <div className="home-wrap">
       <Header />
-      <Button onClick={TEST}>SADASD </Button>
       <div className="home-main">
         <div className="top-image link">
           <img src={require("../../assets/header.jpg")} alt="" />

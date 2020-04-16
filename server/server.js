@@ -10,6 +10,7 @@ const sequelize = require('./db')
 const app = express()
 const userRouter = require('./user')
 const bookRouter = require('./book')
+const commentRouter = require('./comment')
 
 const server = require('http').Server(app)
 
@@ -29,6 +30,7 @@ app.use(bodyParser.urlencoded())
 
 app.use('/user', userRouter)
 app.use('/book', bookRouter)
+app.use('/comment', commentRouter)
 
 server.listen(9094, function () {
   console.log('Node app start at port  9094')
