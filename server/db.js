@@ -113,7 +113,10 @@ const bookInfo = sequelize.define(
 bookInfo.sync()
 
 const comment = sequelize.define('comment', {
-  text: Sequelize.STRING,
+  text: {
+    type: Sequelize.STRING,
+    unique: true
+  },
   score: Sequelize.STRING,
   userId: {
     'type': Sequelize.STRING,

@@ -43,7 +43,7 @@ account.create({
   books: "9787512511996;9787559638083;9787208151345"
 })
 
-const tureRes = {
+const trueRes = {
   success: true,
   error: null,
   code: 0
@@ -63,7 +63,7 @@ Router.post('/getbooks', function(req, res) {
   }).then(ret => {
     res.json({
       data: ret,
-      ...tureRes
+      ...trueRes
     })
   })
 })

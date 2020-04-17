@@ -12,7 +12,7 @@ let config = {
   headers: {
     // 设置
     'Content-Type': 'application/x-www-form-urlencoded',
-    "origin": "http://192.168.0.13:3000",
+    "origin": "http://127.0.0.1:3000",
     // 'Access-Control-Allow-Origin': '*'
     // "Access-Control-Allow-Credentials": "true"
   },

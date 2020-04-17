@@ -6,7 +6,7 @@ const book = sequelize.model('book')
 const bookInfo = sequelize.model('bookInfo')
 
 bookInfo.belongsTo(book, { foreignKey: 'ISBN', targetKey: 'ISBN' })
-const tureRes = {
+const trueRes = {
   success: true,
   error: null,
   code: 0
@@ -22,7 +22,7 @@ Router.post('/detail', function(req, res) {
   }).then(ret => {
     return res.json({
       data: ret,
-      ...tureRes
+      ...trueRes
     })
   })
 })
@@ -30,8 +30,20 @@ Router.post('/detail', function(req, res) {
 Router.post('/allbook', function(req, res) {
   book.findAll().then(ret => res.json({
     data: ret,
-    ...tureRes
+    ...trueRes
   }))
+})
+
+Router.post('/getrecommend', (req, res) => {
+  const { ISBN } = req.body
+  book.findAll().then(ret => {
+    const result1 = ret.filter(item => item.ISBN !== ISBN).splice(0, 6)
+    const result2 = ret.filter(item => item.ISBN !== ISBN).splice(3, 9)
+    return res.json({
+      data: Math.random() > 0.5 ? result1 : result2,
+      ...trueRes
+    })
+  })
 })
 
 bookInfo.create({

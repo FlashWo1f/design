@@ -1,14 +1,14 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React, { useState, useEffect, createElement } from "react";
 import Header from '../../components/Header'
-import { detailInfo } from '../../mock/home'
 import { Rate, Divider, Comment, Avatar, Tooltip, Card } from 'antd'
-import { getBookDetail } from "../../api/book"
+import { getBookDetail, getRecommend } from "../../api/book"
 import { getCommentByISBN } from "../../api/comment"
 import moment from 'moment';
 import './detail.less'
 import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
 
+const { Meta } = Card
 interface CommentProps {
   comment: any
 }
@@ -16,7 +16,7 @@ interface CommentProps {
 const RenderComments = (props: CommentProps) => {
 
   const { comment } = props
-  const { like: likeNum , dislike: dislikeNum , account: { userName, avatar }, id, text, createdAt } = comment
+  const { like: likeNum, dislike: dislikeNum, account: { userName, avatar }, score, id, text, createdAt } = comment
 
   const [action, setAction] = useState<String | null>(null);
   const [likes, setLikes] = useState(comment.like);
@@ -60,7 +60,12 @@ const RenderComments = (props: CommentProps) => {
         <div className="comment-wrap" key={id}>
           <Comment
             actions={actions(likeNum, dislikeNum)}
-            author={<span>{userName}</span>}
+            author={
+              <>
+                <span style={{ marginRight: 12 }}>{userName}</span>
+                <Rate allowHalf defaultValue={Number(score)} disabled />
+              </>
+            }
             avatar={
               <Avatar
                 src={avatar}
@@ -74,6 +79,7 @@ const RenderComments = (props: CommentProps) => {
               </Tooltip>
             }
           />
+          <Divider />
         </div>
       }
     </div>
@@ -88,7 +94,8 @@ export default function (props: any) {
   const [bookDetail, setBookDetail] = useState<any>({})
   const [comments, setComments] = useState<any>([])
   const [isGetComment, setIsGetComment] = useState(false)
-  const [action, setAction] = useState<String | null>(null);
+  const [recomm, setRecomm] = useState<any>([])
+  const [isGetRec, setIsGetRec] = useState(false)
 
   useEffect(() => {
     getBookDetail({ ISBN: myISBN }).then(res => {
@@ -96,12 +103,15 @@ export default function (props: any) {
       if (success) {
         const info = []
         for (let key in data) {
-          console.log("111", key)
           if (typeof data[key] === "object" && data[key]["label"]) {
             info.push(data[key])
           }
         }
-        data.info = info
+        info.push({
+          label: "ISBN",
+          value: myISBN
+        })
+        if (data) data.info = info
         setBookDetail(data)
         setIsGetInfo(true)
       }
@@ -113,59 +123,16 @@ export default function (props: any) {
         setIsGetComment(true)
       }
     })
+    getRecommend({ ISBN: myISBN }).then((res: any) => {
+      if (res.data && res.data.success) {
+        const { data: { data } } = res
+        setRecomm(data)
+        setIsGetRec(true)
+      }
+    })
   }, [myISBN])
 
   const { book, info } = bookDetail
-  // console.log("kelong", book, info) 
-
-  const [likes, setLikes] = useState(0);
-  const [dislikes, setDislikes] = useState(0);
-
-  const like = (likeNum: any, dislikeNum: any) => {
-    setLikes(likeNum++);
-    setDislikes(dislikeNum);
-    setAction('liked');
-  };
-
-  const dislike = (likeNum: any, dislikeNum: any) => {
-    setLikes(likeNum);
-    setDislikes(dislikeNum++);
-    setAction('disliked');
-  };
-
-
-
-  // const renderComments = () => {
-  //   console.log("---------", comments)
-  //   // const { account: { avatar, userName }, createdAt, text, score, like, dislike } = comments
-  //   return (
-  //     <div className="comments-wrap">
-  //       {
-  //         Array.isArray(comments) && comments.map((item: any) =>
-  //           <div className="comment-wrap" key={item.id}>
-  //             <Comment
-  //               actions={actions(item.like, item.dislike)}
-  //               author={<span>{item.account.userName}</span>}
-  //               avatar={
-  //                 <Avatar
-  //                   src={item.account.avatar}
-  //                   alt="Han Solo"
-  //                 />
-  //               }
-  //               content={<p>{item.text}</p>}
-  //               datetime={
-  //                 <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
-  //                   <span>{moment(item.createdAt).fromNow()}</span>
-  //                 </Tooltip>
-  //               }
-  //             />
-  //           </div>
-  //         )
-  //       }
-  //     </div>
-  //   )
-  // }
-
   return (
     <div className="detail-wrap">
       <Header />
@@ -174,12 +141,15 @@ export default function (props: any) {
         <div className="main">
           <div className="detail-info">
             <div className="detail-info-image link" onClick={() => window.open("https://img3.doubanio.com/view/subject/s/public/s33595640.jpg", "_blank")}>
-              <img src="https://img3.doubanio.com/view/subject/s/public/s33595640.jpg" alt="" />
+              {
+                isGetInfo &&
+                <img src={book.img} alt="" />
+              }
             </div>
             <div className="detail-info-logs">
               {
-                isGetInfo && Array.isArray(info) && info.map((item: any) => <>
-                  <div className="log">
+                isGetInfo && Array.isArray(info) && info.map((item: any, index) => <>
+                  <div className="log" key={index}>
                     <span className="log-key">{item.label}:&nbsp;&nbsp;</span>
                     <span className="log-value">{item.value}</span>
                   </div>
@@ -188,7 +158,10 @@ export default function (props: any) {
             </div>
             <div className="detail-info-score">
               <div className="score-text">评分</div>
-              <Rate allowHalf defaultValue={2.5} disabled />
+              {
+                isGetInfo &&
+                <Rate allowHalf defaultValue={book.score} disabled />
+              }
             </div>
           </div>
           <div className="detail-desc">
@@ -196,11 +169,11 @@ export default function (props: any) {
               <h3>内容简介</h3>
             </Divider>
             {
-              detailInfo.titleIntro.map(item => <p>{item}</p>)
+              isGetInfo && book.titleIntro.split("。").map((item: any, index: any) => <p key={index}>{item}</p>)
             }
-            <p>🕳 内容简介</p>
+            <p style={{ marginBottom: 10, fontSize: 16 }}>🕳 内容简介</p>
             {
-              detailInfo.conIntro.map(item => <p>{item}</p>)
+              isGetInfo && book.conIntro.split("。").map((item: any) => <p>{item}</p>)
             }
           </div>
           <div className="detail-shortComm">
@@ -220,11 +193,18 @@ export default function (props: any) {
             <h3>同类书籍推荐</h3>
           </Divider>
           <div className="aside-flex-books">
-            <div className="aside-book-wrap">
               {
-                <Card />
+                isGetRec && recomm.map((item: any) => 
+                  <div className="aside-book-wrap">
+                    <Card
+                      hoverable
+                      bodyStyle={{display: "none"}}
+                      cover={<img alt="example" src={item.img} />}
+                    >
+                    </Card>
+                  </div>
+                )
               }
-            </div>
           </div>
         </div>
       </div>
