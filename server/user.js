@@ -126,6 +126,32 @@ Router.get('/getalluser', function(req,res) {
     })
   })
 })
+
+// 登录  待测试
+Router.post("/login", function(req, res) {
+  const { username, password } = req.body
+  account.findOne({
+    'where': {
+      'userId': username,
+      'pwd': password
+    }
+  }).then(ret => {
+    console.log("什么````````````````````````````````````````````",ret)
+    if (ret.dataValues) {
+      delete ret.dataValues.pwd
+      res.json({
+        data: ret.dataValues,
+        ...trueRes
+      })
+    } else {
+      res.json({
+        success: false,
+        error: "该用户不存在",
+        code: -1
+      })
+    }
+  })
+})
 // 我们自己对原始的MD5进行复杂度调整
 function pwdMd5(pwd) {
   const salt = 'Ethan_is_man_56good#@!45$sss$453%^&9**~~~~``'

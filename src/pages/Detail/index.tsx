@@ -132,6 +132,12 @@ export default function (props: any) {
     })
   }, [myISBN])
 
+  const handleGoDetail = (ISBN:String) => {
+    props.history.push(`/detail/${ISBN}`)
+    // eslint-disable-next-line no-restricted-globals
+    location.reload()
+  }
+
   const { book, info } = bookDetail
   return (
     <div className="detail-wrap">
@@ -140,7 +146,7 @@ export default function (props: any) {
         <h1 className="title">{isGetInfo && book.bookName}</h1>
         <div className="main">
           <div className="detail-info">
-            <div className="detail-info-image link" onClick={() => window.open("https://img3.doubanio.com/view/subject/s/public/s33595640.jpg", "_blank")}>
+            <div className="detail-info-image link" onClick={() => window.open(book.img, "_blank")}>
               {
                 isGetInfo &&
                 <img src={book.img} alt="" />
@@ -173,7 +179,7 @@ export default function (props: any) {
             }
             <p style={{ marginBottom: 10, fontSize: 16 }}>🕳 内容简介</p>
             {
-              isGetInfo && book.conIntro.split("。").map((item: any) => <p>{item}</p>)
+              isGetInfo && book.conIntro.split("。").map((item: any, index: any) => <p key={index}>{item}</p>)
             }
           </div>
           <div className="detail-shortComm">
@@ -183,7 +189,7 @@ export default function (props: any) {
             {
               !isGetComment ? "Loading" :
                 comments.length ?
-                  comments.map((item: any) => <RenderComments comment={item} />)
+                  comments.map((item: any) => <RenderComments key={item.id} comment={item} />)
                   : <div>暂时还没有评论~</div>
             }
           </div>
@@ -195,7 +201,7 @@ export default function (props: any) {
           <div className="aside-flex-books">
               {
                 isGetRec && recomm.map((item: any) => 
-                  <div className="aside-book-wrap">
+                  <div className="aside-book-wrap" key={item.ISBN} onClick={() => handleGoDetail(item.ISBN)}>
                     <Card
                       hoverable
                       bodyStyle={{display: "none"}}

@@ -198,3 +198,11 @@ headers: {
 // 综上还是会在控制台打印出
 // xhr.js:126 Refused to set unsafe header "origin"
 ```
+
+## 文本省略  固定CSS属性组合
+```css
+text-overflow: ellipsis;
+white-space: nowrap;
+overflow: hidden;
+width: 120px;
+```

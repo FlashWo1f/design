@@ -8,3 +8,7 @@ export function userRegister(params: Object) {
 export function getBookCart(params: Object) {
   return post('/user/getbooks', params)
 }
+
+export function userLogin(params: Object) {
+  return post('/user/login', params)
+}

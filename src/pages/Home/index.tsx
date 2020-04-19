@@ -196,16 +196,16 @@ function Home(props:any) {
             <Divider orientation="left">畅销图书榜</Divider>
             <div className="rankList">
               {
-                rankList.map((item, index) => <>
+                books.map((item: any, index) => <>
                   {
                     index === 0 ? <Divider dashed /> : null
                   }
                   <div className="rank-wrap link" key={index}>
                     {/* <Link to={`/detail/${id}`}> */}
-                    <div className={`${index < 3 ? "rank colorful" : "rank"}`}>{item.rank}</div>
+                    <div className={`${index < 3 ? "rank colorful" : "rank"}`}>{index * 1 + 1}</div>
                     <div className="title">
-                      <h3>{item.name}</h3>
-                      <p>{item.desc}</p>
+                      <h3>{item.bookName}</h3>
+                      <p>{item.author}</p>
                     </div>
                     <div className="gobuy">去购买</div>
                     {/* </Link> */}

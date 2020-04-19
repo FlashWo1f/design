@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Tabs, Form, Input, Button } from "antd";
 import './login.less'
-import { userRegister } from "../../api/user";
+import { userRegister, userLogin } from "../../api/user";
 
 const { TabPane } = Tabs;
 
-export default function () {
+export default function (props: any) {
 
   const [img, setImg] = useState<any>(0)
 
   useEffect(() => {
-
     const myInterval = setInterval(() => {
       img === 2 ? setImg(0) : setImg((img + 1))
     }, 3000)
@@ -24,7 +23,7 @@ export default function () {
 
   }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const layout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 16 },
@@ -36,11 +35,19 @@ export default function () {
 
   const onFinish = (values: any) => {
     console.log(values)
-    userRegister({userName: "xiaoawei", pwd: "12345678", userId: "15870907594"})
+    userLogin({ ...values }).then(res => {
+      console.log("loginmess", res)
+      const { data: { data, success } } = res
+      if (success) {
+        localStorage.setItem('userInfo', JSON.stringify(data))
+        props.history.replace("/")
+      }
+    })
   }
 
   const onFinishRegister = (value: Object) => {
-    const {  } = value 
+    // userRegister({userName: "xiaoawei11", pwd: "12345678", userId: "15870907594"})
+    // const {  } = value 
   }
 
   return (
@@ -77,13 +84,13 @@ export default function () {
                   >
                     <Form.Item
                       name="username"
-                      rules={[{ required: true, message: '请输入账号 / 手机号!' }]}
+                      rules={[{ required: true, message: '请输入账号 / 手机号!' }, { min: 11, message: "请输入完整手机号" }, { max: 11, message: "请输入完整手机号" }]}
                     >
                       <Input placeholder="账号 / 手机号" />
                     </Form.Item>
                     <Form.Item
                       name="password"
-                      rules={[{ required: true, message: '请输入密码!' }]}
+                      rules={[{ required: true, message: '请输入您的密码!' }]}
                     >
                       <Input.Password placeholder="密码" />
                     </Form.Item>
@@ -103,7 +110,7 @@ export default function () {
                   >
                     <Form.Item
                       name="username"
-                      rules={[{ required: true, message: '请输入账号或者手机号!' }]}
+                      rules={[{ required: true, message: '请输入账号 / 手机号!' }, { min: 11, message: "请输入完整手机号" }, { max: 11, message: "请输入完整手机号" }]}
                     >
                       <Input placeholder="账号 / 手机号" />
                     </Form.Item>
@@ -115,7 +122,7 @@ export default function () {
                     </Form.Item>
                     <Form.Item
                       name="password"
-                      rules={[{ required: true, message: '请输入您的密码!' }]}
+                      rules={[{ required: true, message: '请输入您的密码!' }, { min: 6, message: "密码最少6位" }]}
                     >
                       <Input.Password placeholder="密码" />
                     </Form.Item>
