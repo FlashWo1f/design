@@ -137,6 +137,28 @@ const account = sequelize.model('account')
 account.findAll().then(res => console.log(res))
 Array.isArray(res)  // true
 ```
+### 关联表
+```js
+// 将bookInfo归属于book表
+bookInfo.belongsTo(book, { foreignKey: 'ISBN', targetKey: 'ISBN' })
+// 在连表查询的时候
+Router.post('/detail', function(req, res) {
+  const { ISBN } = req.body 
+  // 只能在bookInfo的查询里面去include model book 反过来就会报错
+  // 其实node方面res.json里面返回到前端的数据格式可以再优化一些，由于所花时间问题，在这方面粗糙了一些，将重点放在了前端上面 后续如果优化此项目的话，可以考虑将node层配合接口axios去重构一下数据格式
+  bookInfo.findOne({
+    include: [{
+      model: book
+    }],
+    where: { ISBN }
+  }).then(ret => {
+    return res.json({
+      data: ret,
+      ...trueRes
+    })
+  })
+})
+```
 
 ## 创建数据库
 
@@ -164,6 +186,18 @@ You should not use <withRouter(Header) /> outside a <Router>
 用useHistory又报错
 Cannot read property 'history' of undefined
 return useContext(Context).history
+
+### 跳转到页面指定位置
+1. 本以为给目标盒子加上id, 然后将window.location.hash = "#id"就行
+以失败告终
+2.
+ ```js
+setTimeout(() => {
+        const ele: any = document.getElementById("comments")
+        ele.scrollIntoView()
+      }, 0);
+```
+失败
 
 ### 图片
 

@@ -1,10 +1,13 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React, { useState, useEffect, createElement } from "react";
 import Header from '../../components/Header'
-import { Rate, Divider, Comment, Avatar, Tooltip, Card } from 'antd'
+import { Rate, Divider, Comment, Avatar, Tooltip, Card, message } from 'antd'
 import { getBookDetail, getRecommend } from "../../api/book"
+import { addBookToCart } from "../../api/user"
 import { getCommentByISBN } from "../../api/comment"
 import moment from 'moment';
+import { ShoppingCartOutlined } from '@ant-design/icons';
+import { isAuthority } from "../../utils"
 import './detail.less'
 import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
 
@@ -27,12 +30,14 @@ const RenderComments = (props: CommentProps) => {
     setLikes(++likeNum);
     setDislikes(dislikeNum);
     setAction('liked');
+    message.success("好评成功！")
   };
 
   const dislike = (likeNum: any, dislikeNum: any) => {
     setLikes(likeNum);
     setDislikes(++dislikeNum);
     setAction('disliked');
+    message.success("丢了个差评！")
   };
 
   const actions = (likeNum: any, dislikeNum: any) => [
@@ -116,6 +121,15 @@ export default function (props: any) {
         setIsGetInfo(true)
       }
     })
+    // window.location.hash = "#comment"
+    console.log("sdasd", window.location.hash, window.location.hash === "#comments")
+    if (window.location.hash === "#comments") {
+      setTimeout(() => {
+        const ele: any = document.getElementById("comments")
+        console.log("是的", ele)
+        ele.scrollIntoView()
+      }, 0);
+    }
     getCommentByISBN({ ISBN: myISBN }).then((res: any) => {
       if (res.data && res.data.success) {
         const { data: { data } } = res
@@ -132,7 +146,14 @@ export default function (props: any) {
     })
   }, [myISBN])
 
-  const handleGoDetail = (ISBN:String) => {
+  const handleAddToCart = () => {
+    const auth = isAuthority()
+    const userInfo:any = localStorage.getItem("userInfo")
+    const { userId } =  JSON.parse(userInfo) || {}
+    auth && userId && addBookToCart({ISBN: myISBN, userId})
+  }
+
+  const handleGoDetail = (ISBN: String) => {
     props.history.push(`/detail/${ISBN}`)
     // eslint-disable-next-line no-restricted-globals
     location.reload()
@@ -168,6 +189,9 @@ export default function (props: any) {
                 isGetInfo &&
                 <Rate allowHalf defaultValue={book.score} disabled />
               }
+              <div className="addtocart link" onClick={handleAddToCart}>
+                <ShoppingCartOutlined /> 添加到购物车
+              </div>
             </div>
           </div>
           <div className="detail-desc">
@@ -182,7 +206,7 @@ export default function (props: any) {
               isGetInfo && book.conIntro.split("。").map((item: any, index: any) => <p key={index}>{item}</p>)
             }
           </div>
-          <div className="detail-shortComm">
+          <div className="detail-shortComm" id="comments">
             <Divider orientation="left">
               <h3>短评</h3>
             </Divider>
@@ -199,18 +223,18 @@ export default function (props: any) {
             <h3>同类书籍推荐</h3>
           </Divider>
           <div className="aside-flex-books">
-              {
-                isGetRec && recomm.map((item: any) => 
-                  <div className="aside-book-wrap" key={item.ISBN} onClick={() => handleGoDetail(item.ISBN)}>
-                    <Card
-                      hoverable
-                      bodyStyle={{display: "none"}}
-                      cover={<img alt="example" src={item.img} />}
-                    >
-                    </Card>
-                  </div>
-                )
-              }
+            {
+              isGetRec && recomm.map((item: any) =>
+                <div className="aside-book-wrap" key={item.ISBN} onClick={() => handleGoDetail(item.ISBN)}>
+                  <Card
+                    hoverable
+                    bodyStyle={{ display: "none" }}
+                    cover={<img alt="example" src={item.img} />}
+                  >
+                  </Card>
+                </div>
+              )
+            }
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Input, Divider, Menu, Dropdown } from 'antd';
+import { Input, Divider, Menu, Dropdown, message } from 'antd';
 import './index.less'
 import { withRouter } from "react-router-dom"
 import { ShoppingCartOutlined } from '@ant-design/icons';
@@ -95,7 +95,7 @@ function Header(props: any) {
       <div className="nav-links">
         <div className="nav-link link" onClick={() => props.history.push("/")}>首页</div>
         <div className="nav-link link" onClick={() => window.open("https://book.douban.com/annual/2019?source=navigation", "_blank")}>2019年度榜单</div>
-        <div className="nav-link link">豆瓣书店</div>
+        <div className="nav-link link" onClick={() => message.error("这块功能没有实现...")}>豆瓣书店</div>
         <div className="nav-link link" onClick={handleGoCart}>
           <ShoppingCartOutlined style={{ fontSize: 18, marginRight: 5 }} />
           购物车

@@ -112,8 +112,29 @@ Router.post('/register', function(req, res) {
     }
   })
 })
+
+// 将某本书加入购物车
+Router.post("/addtocart", function(req, res) {
+  const {ISBN, userId} = req.body
+  account.findOne({
+    where: {
+      userId
+    }
+  }).then(ret => {
+    const books = ret.books +";"+ ISBN;
+    account.update(
+      {books},
+      {where: {
+        userId
+      }}
+    ).then(temp => {
+      console.log("pozzzzzzzzzzzzzzzzzzz", temp)
+    })
+  })
+})
+
 // 获取所有用户  待测试
-Router.get('/getalluser', function(req,res) {
+Router.get('/getalluser', function(req, res) {
   // 用户列表
   account.findAll({
     order: [ // 使用order进行排序
@@ -127,7 +148,7 @@ Router.get('/getalluser', function(req,res) {
   })
 })
 
-// 登录  待测试
+// 登录
 Router.post("/login", function(req, res) {
   const { username, password } = req.body
   account.findOne({
@@ -136,7 +157,6 @@ Router.post("/login", function(req, res) {
       'pwd': password
     }
   }).then(ret => {
-    console.log("什么````````````````````````````````````````````",ret)
     if (ret.dataValues) {
       delete ret.dataValues.pwd
       res.json({
@@ -153,9 +173,9 @@ Router.post("/login", function(req, res) {
   })
 })
 // 我们自己对原始的MD5进行复杂度调整
-function pwdMd5(pwd) {
-  const salt = 'Ethan_is_man_56good#@!45$sss$453%^&9**~~~~``'
-  return utility.md5(utility.md5(pwd + salt))
-}
+// function pwdMd5(pwd) {
+//   const salt = 'Ethan_is_man_56good#@!45$sss$453%^&9**~~~~``'
+//   return utility.md5(utility.md5(pwd + salt))
+// }
 
 module.exports = Router

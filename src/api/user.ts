@@ -12,3 +12,12 @@ export function getBookCart(params: Object) {
 export function userLogin(params: Object) {
   return post('/user/login', params)
 }
+
+interface addToCartParams {
+  ISBN: String,
+  userId: String
+}
+
+export function addBookToCart(params: addToCartParams) {
+  return post('/user/addtocart', params)
+}
