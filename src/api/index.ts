@@ -1,5 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
+import { message } from "antd"
 // import { getQueryString } from './common'
 // 配置axios的config
 // console.log(getUrl())
@@ -12,7 +13,7 @@ let config = {
   headers: {
     // 设置
     'Content-Type': 'application/x-www-form-urlencoded',
-    "origin": "http://127.0.0.1:3000",
+    // "origin": "http://127.0.0.1:3000",
     // 'Access-Control-Allow-Origin': '*'
     // "Access-Control-Allow-Credentials": "true"
   },
@@ -43,6 +44,10 @@ axios.interceptors.response.use((data) => {
   // Loading({
   //   state: false
   // })
+  const { data: { success, error } } = data
+  if (!success) {
+    message.error(error)
+  }
   return data
 }, error => {
   return Promise.reject(error)

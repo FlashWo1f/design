@@ -21,3 +21,7 @@ interface addToCartParams {
 export function addBookToCart(params: addToCartParams) {
   return post('/user/addtocart', params)
 }
+
+export function delBookFromCart(params: addToCartParams) {
+  return post('/user/delfromcart', params)
+}

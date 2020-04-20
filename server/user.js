@@ -49,26 +49,42 @@ const trueRes = {
   code: 0
 }
 
-Router.post('/getbooks', function(req, res) {
+Router.post('/getbooks', function (req, res) {
   // 获取用户购物车的书，
-  const { books } = req.body
-  const booksArr = books.split(";")
-  bookInfo.findAndCountAll({
-    include: book,
-    where: {
-      ISBN: {
-        $in: booksArr
-      }
-    }
+  const { userId } = req.body
+  // console.log("好像有点问题题题题题题题题题题题题题", req.body)
+  account.findOne({
+    where: { userId }
   }).then(ret => {
-    res.json({
-      data: ret,
-      ...trueRes
-    })
+    if (ret) {
+      const { books } = ret
+      const booksArr = books.split(";")
+      bookInfo.findAndCountAll({
+        include: book,
+        where: {
+          ISBN: {
+            $in: booksArr
+          }
+        }
+      }).then(ret => {
+        res.json({
+          data: ret,
+          ...trueRes
+        })
+      })
+    } else {
+      res.json({
+        error: "用户不存在",
+        code: -1,
+        success: false
+      })
+    }
   })
+
+
 })
 
-Router.post('/register', function(req, res) {
+Router.post('/register', function (req, res) {
   // 用户注册
   const body = req.body
   console.log("lululu", body)
@@ -84,7 +100,7 @@ Router.post('/register', function(req, res) {
   // account.create(data) => 放入数据去mysql
   account.create(data).then(doc => {
     // console.log("hahaha", doc)
-    const {userName, userId} = doc
+    const { userName, userId } = doc
     // const {userName, userId, user_info, avatar} = doc
     res.cookie('userId', userId)
     return res.json({
@@ -97,59 +113,121 @@ Router.post('/register', function(req, res) {
       }
     })
   },
-  error => {
-    // sqlMessage 数据库错误信息
-    const { errors, parent: { code } } = error
-    // console.log("error", errors[0].type, code)
-    if (errors[0].type) {
-      if (code === "ER_DUP_ENTRY") {
-        return res.json({
-          code: -1,
-          success: false,
-          error: "该账号已被注册，直接登录吧~"
-        })
+    error => {
+      // sqlMessage 数据库错误信息
+      const { errors, parent: { code } } = error
+      // console.log("error", errors[0].type, code)
+      if (errors[0].type) {
+        if (code === "ER_DUP_ENTRY") {
+          return res.json({
+            code: -1,
+            success: false,
+            error: "该账号已被注册，直接登录吧~"
+          })
+        }
       }
-    }
-  })
+    })
 })
 
 // 将某本书加入购物车
-Router.post("/addtocart", function(req, res) {
-  const {ISBN, userId} = req.body
+Router.post("/addtocart", function (req, res) {
+  const { ISBN, userId } = req.body
   account.findOne({
     where: {
       userId
     }
   }).then(ret => {
-    const books = ret.books +";"+ ISBN;
+    const books = ret.books + ";" + ISBN;
+    if (ret.books.includes(ISBN)) {
+      return res.json({
+        error: "该商品已在购物车",
+        code: -1,
+        success: false
+      })
+    }
     account.update(
-      {books},
-      {where: {
-        userId
-      }}
+      { books },
+      {
+        where: {
+          userId
+        }
+      }
     ).then(temp => {
-      console.log("pozzzzzzzzzzzzzzzzzzz", temp)
+      if (temp) {
+        res.json({
+          ...trueRes
+        })
+      } else {
+        res.json({
+          error: "操作失败",
+          code: -1,
+          success: false
+        })
+      }
+    })
+  })
+})
+
+// 将某本书从购物车删除
+Router.post("/delfromcart", function (req, res) {
+  const { ISBN, userId } = req.body
+  account.findOne({
+    where: {
+      userId
+    }
+  }).then(ret => {
+    const ISBNArr = ret.books.split(";")
+    const result = ISBNArr.filter(item => item !== ISBN)
+    console.log("asdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad", ISBNArr, result)
+    account.update({ books: result.join(";") }, {
+      where: {
+        userId
+      }
+    }).then(temp => {
+      if (temp) {
+        res.json({
+          ...trueRes
+        })
+      } else {
+        res.json({
+          error: "操作失败",
+          code: -1,
+          success: false
+        })
+      }
     })
   })
 })
 
 // 获取所有用户  待测试
-Router.get('/getalluser', function(req, res) {
+Router.post('/getalluser', function (req, res) {
   // 用户列表
-  account.findAll({
-    order: [ // 使用order进行排序
-      ['createdAt'],
-    ]
-  }).then(doc => {
-    return res.json({
-      code: 0,
-      data: doc
+  const { userId } = req.body
+  if (userId) {
+    account.findOne({
+      where: { userId }
+    }).then(ret => {
+      return res.json({
+        data: ret,
+        ...trueRes
+      })
     })
-  })
+  } else {
+    account.findAll({
+      order: [ // 使用order进行排序
+        ['createdAt'],
+      ]
+    }).then(doc => {
+      return res.json({
+        code: 0,
+        data: doc
+      })
+    })
+  }
 })
 
 // 登录
-Router.post("/login", function(req, res) {
+Router.post("/login", function (req, res) {
   const { username, password } = req.body
   account.findOne({
     'where': {

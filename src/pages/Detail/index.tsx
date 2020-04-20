@@ -150,7 +150,12 @@ export default function (props: any) {
     const auth = isAuthority()
     const userInfo:any = localStorage.getItem("userInfo")
     const { userId } =  JSON.parse(userInfo) || {}
-    auth && userId && addBookToCart({ISBN: myISBN, userId})
+    auth && userId && addBookToCart({ISBN: myISBN, userId}).then(res => {
+      const { data: { success }} = res
+      if (success) {
+        message.success("成功添加到购物车")
+      }
+    }) 
   }
 
   const handleGoDetail = (ISBN: String) => {

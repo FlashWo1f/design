@@ -15,12 +15,14 @@ const commentRouter = require('./comment')
 const server = require('http').Server(app)
 
 app.all('*', function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://127.0.0.1:3000");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.header("X-Powered-By", '3.2.1')
-  res.header("Content-Type", "application/json;charset=utf-8");
+  if( req.headers.origin == 'http://127.0.0.1:3000' || req.headers.origin == 'http://127.0.0.1:8000' ) {
+    res.header("Access-Control-Allow-Origin", req.headers.origin);
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header("X-Powered-By", '3.2.1')
+    res.header("Content-Type", "application/json;charset=utf-8");
+  }
   next();
 });
 

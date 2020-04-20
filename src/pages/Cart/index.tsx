@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../../components/Header';
-import { Table, Button, Alert, Popconfirm } from 'antd';
+import { Table, Button, Alert, Popconfirm, message } from 'antd';
 import { withRouter } from 'react-router-dom'
-import { getBookCart } from '../../api/user'
+import { getBookCart, delBookFromCart } from '../../api/user'
 import './Cart.less'
 
 function Cart(props: any) {
   const [list, setList] = useState<any>([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
-  const confirm = () => {
-    console.log("彳亍")
-  }
   const handleDeleteBook = (ISBN: String) => {
-    
+    const userInfo: any = localStorage.getItem("userInfo")
+    const { userId } = JSON.parse(userInfo)
+    delBookFromCart({ ISBN, userId }).then(res => {
+      const { data: { success }} = res
+      if (success) {
+        message.success("删除成功")
+        init()
+      }
+    })
   }
   const columns = [
     {
@@ -46,8 +51,8 @@ function Cart(props: any) {
       title: "操作",
       width: 100,
       render: (field: any, allFields: any) => (
-        <Popconfirm placement="top" title={`确定把书《${allFields.info[0]}》删除吗`} onConfirm={confirm} okText="确定" cancelText="取消">
-          <Button type="link" onClick={() => handleDeleteBook(allFields.ISBN)}>删除</Button>
+        <Popconfirm placement="top" title={`确定把书《${allFields.info[0]}》删除吗`} onConfirm={() => handleDeleteBook(allFields.ISBN)} okText="确定" cancelText="取消">
+          <Button type="link">删除</Button>
         </Popconfirm>
       )
     }
@@ -65,8 +70,10 @@ function Cart(props: any) {
     props.history.push("/home")
   }
 
-  useEffect(() => {
-    getBookCart({ books: "10019-1985;9787535735508" }).then(res => {
+  const init = () => {
+    const userInfoTemp: any = localStorage.getItem("userInfo")
+    const { userId } = JSON.parse(userInfoTemp) || {}
+    getBookCart({ userId }).then(res => {
       if (res.data.success) {
         res.data.data.rows.map((item: any) => {
           const { author, publisher, originalName, price, ISBN, book: { bookName, img } } = item
@@ -88,19 +95,12 @@ function Cart(props: any) {
         setList(data)
       }
     })
+  }
+
+  useEffect(() => {
+    init()
   }, [])
 
-  // console.log(0, list,selectedRowKeys.map((item) => {
-  //   list.find((temp:any) => temp.ISBN === item)
-  //   console.log(item === list[0].ISBN)
-  // }))
-
-  // const priccce = () => {
-  //   selectedRowKeys.map(item => {
-  //     list.find((temp:any) => temp.ISBN === item)
-  //   })
-  // }
-  // console.log(priccce())
   const priceArray = Array.isArray(list) && list.length && list.map((item: any) => {
     // @ts-ignore
     if (selectedRowKeys.includes(item.ISBN)) {
@@ -108,19 +108,15 @@ function Cart(props: any) {
     }
     return 0
   })
-  console.log(9, priceArray)
-  // @ts-ignore
   const price = Array.isArray(priceArray) && priceArray.reduce(function (prev: any, cur: any) {
     return Number(prev) + Number(cur);
   })
-  const AlertMessage = Array.isArray(list) && list.length && <div>
+  const AlertMessage = 
+  // Array.isArray(list) && list.length && 
+  <div>
     <span style={{ marginRight: 15 }}>共&nbsp;&nbsp;{list.length}&nbsp;&nbsp;项</span>
     <span style={{ marginRight: 15 }}>已选中&nbsp;&nbsp;{selectedRowKeys.length}&nbsp;&nbsp;项</span>
-    <span>共￥&nbsp;&nbsp;{
-      // @ts-ignore
-
-      price
-    }&nbsp;&nbsp;元</span>
+    <span>共￥&nbsp;&nbsp;{price}&nbsp;&nbsp;元</span>
   </div>
 
   return (
