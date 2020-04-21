@@ -34,6 +34,13 @@ Router.post('/allbook', function(req, res) {
   }))
 })
 
+// admin 获取图书信息 TODO
+Router.post('/allbookdetail', function(req, res) {
+  bookInfo.findAll({
+    include: book
+  })
+})
+
 Router.post('/getrecommend', (req, res) => {
   const { ISBN } = req.body
   book.findAll().then(ret => {

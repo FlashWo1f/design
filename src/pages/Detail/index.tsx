@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React, { useState, useEffect, createElement } from "react";
 import Header from '../../components/Header'
-import { Rate, Divider, Comment, Avatar, Tooltip, Card, message } from 'antd'
+import { Rate, Divider, Comment, Avatar, Tooltip, Card, message, Anchor } from 'antd'
 import { getBookDetail, getRecommend } from "../../api/book"
 import { addBookToCart } from "../../api/user"
 import { getCommentByISBN } from "../../api/comment"
@@ -12,6 +12,7 @@ import './detail.less'
 import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
 
 const { Meta } = Card
+const { Link } = Anchor
 interface CommentProps {
   comment: any
 }
@@ -125,9 +126,10 @@ export default function (props: any) {
     console.log("sdasd", window.location.hash, window.location.hash === "#comments")
     if (window.location.hash === "#comments") {
       setTimeout(() => {
-        const ele: any = document.getElementById("comments")
-        console.log("是的", ele)
-        ele.scrollIntoView()
+        // const ele: any = document.getElementById("comments")
+        // console.log("是的", ele)
+        // ele.scrollIntoView()
+        window.location.hash = '#comments'
       }, 0);
     }
     getCommentByISBN({ ISBN: myISBN }).then((res: any) => {

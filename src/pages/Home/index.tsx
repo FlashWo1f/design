@@ -18,7 +18,7 @@ const RenderDesc = (props: any) => {
       {
         text.length > 130
           ?
-          <span onClick={() => setStatus(!status)} className="status-trigger link">
+          <span onClick={(e) => {e.stopPropagation();setStatus(!status)}} className="status-trigger link">
             {
               status ? <span>(收起)</span> : <span>...(展开)</span>
             }

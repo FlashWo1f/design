@@ -52,7 +52,7 @@ const trueRes = {
 Router.post('/getbooks', function (req, res) {
   // 获取用户购物车的书，
   const { userId } = req.body
-  // console.log("好像有点问题题题题题题题题题题题题题", req.body)
+  console.log("好像有点问题题题题题题题题题题题题题", req.body)
   account.findOne({
     where: { userId }
   }).then(ret => {
@@ -199,31 +199,23 @@ Router.post("/delfromcart", function (req, res) {
   })
 })
 
-// 获取所有用户  待测试
+// 获取所有用户  待测试  已测试
 Router.post('/getalluser', function (req, res) {
   // 用户列表
   const { userId } = req.body
-  if (userId) {
-    account.findOne({
-      where: { userId }
-    }).then(ret => {
-      return res.json({
-        data: ret,
-        ...trueRes
-      })
+  const where = userId ? { where: { userId } } : {}
+  account.findAll({
+    order: [ // 使用order进行排序
+      ['createdAt'],
+    ],
+    ...where,
+    attributes: ['id', 'userId', 'userName', 'avatar', 'books', 'createdAt']
+  }).then(doc => {
+    return res.json({
+      code: 0,
+      data: doc
     })
-  } else {
-    account.findAll({
-      order: [ // 使用order进行排序
-        ['createdAt'],
-      ]
-    }).then(doc => {
-      return res.json({
-        code: 0,
-        data: doc
-      })
-    })
-  }
+  })
 })
 
 // 登录
