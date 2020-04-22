@@ -178,7 +178,6 @@ Router.post("/delfromcart", function (req, res) {
   }).then(ret => {
     const ISBNArr = ret.books.split(";")
     const result = ISBNArr.filter(item => item !== ISBN)
-    console.log("asdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad", ISBNArr, result)
     account.update({ books: result.join(";") }, {
       where: {
         userId
@@ -203,7 +202,7 @@ Router.post("/delfromcart", function (req, res) {
 Router.post('/getalluser', function (req, res) {
   // 用户列表
   const { userId } = req.body
-  const where = userId ? { where: { userId } } : {}
+  const where = userId ? { where: { userId: {[sequelize.Op.like]: `%${userId}%`} } } : {}
   account.findAll({
     order: [ // 使用order进行排序
       ['createdAt'],

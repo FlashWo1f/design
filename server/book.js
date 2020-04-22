@@ -36,8 +36,21 @@ Router.post('/allbook', function(req, res) {
 
 // admin 获取图书信息 TODO
 Router.post('/allbookdetail', function(req, res) {
+  const { ISBN = '' } = req.body
+  console.log("我是真的服了", res.body)
   bookInfo.findAll({
-    include: book
+    include: book,
+    where: {
+      ISBN: {
+        // 模糊查询
+        [sequelize.Op.like]: `%${ISBN}%`
+      }
+    }
+  }).then(ret => {
+    res.json({
+      data: ret,
+      ...trueRes
+    })
   })
 })
 
@@ -108,7 +121,7 @@ bookInfo.create({
   },
   price: {
     label: "价格",
-    value: "65.00元"
+    value: "65.00"
   },
   layout: {
     label: "装帧",
@@ -139,7 +152,7 @@ bookInfo.create({
   },
   price: {
     label: "价格",
-    value: "58.00元"
+    value: "58.00"
   },
   layout: {
     label: "装帧",
