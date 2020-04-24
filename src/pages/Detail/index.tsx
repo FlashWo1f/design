@@ -126,11 +126,9 @@ export default function (props: any) {
     console.log("sdasd", window.location.hash, window.location.hash === "#comments")
     if (window.location.hash === "#comments") {
       setTimeout(() => {
-        // const ele: any = document.getElementById("comments")
-        // console.log("是的", ele)
-        // ele.scrollIntoView()
-        window.location.hash = '#comments'
-      }, 0);
+        const ele: any = document.getElementById("comments")
+        window.scrollTo(0, ele.offsetTop)
+      }, 100);
     }
     getCommentByISBN({ ISBN: myISBN }).then((res: any) => {
       if (res.data && res.data.success) {

@@ -37,7 +37,6 @@ Router.post('/allbook', function(req, res) {
 // admin 获取图书信息 TODO
 Router.post('/allbookdetail', function(req, res) {
   const { ISBN = '' } = req.body
-  console.log("我是真的服了", res.body)
   bookInfo.findAll({
     include: book,
     where: {
