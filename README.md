@@ -1,3 +1,15 @@
+# 用户操作手册
+## 操作环境
+开发工具为VS Code。
+最佳实践应在VS Code。
+## 操作简介
+1. 拷贝项目
+2. 安装项目依赖: 该文件夹下命令行输入 npm i || yarn
+3. 开启mysql服务器。创建design数据库。账号名最好是root 密码123456 如果不是 则需要去server/db.js里修改配置
+4. 初始化数据：该文件夹下命令行输入 node server/db
+5. 启动node服务: 该文件夹下命令行输入 node server/server => localhost:9094
+6. 启动前端服务：该文件夹下命令行输入 npm run start => localhost:8000
+
 # 项目
 
 - 如果要使用 react 的话，对新手来说，首选脚手架大概就是使用由 facebook  官方出的脚手架 create-react-app 了
