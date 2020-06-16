@@ -184,7 +184,8 @@ text-indent 首行文本缩进
 
 ## 跨域
 本地服务在9094端口，前端在3000端口，即使是本地，端口不一样还是跨域的
-
+https://www.jianshu.com/p/f9b0b720e2cb
+https://www.html.cn/create-react-app/docs/proxying-api-requests-in-development/
 ## bug
 添加了setupProxy.js文件
 paths文件中也导出了
